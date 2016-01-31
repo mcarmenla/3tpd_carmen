@@ -1,0 +1,21 @@
+CC.AA;Población;Fuente;nº dosis;%
+Andalucía;41.731;BDU/DIRAYA;23.467;56,2
+Aragón;5.600;IAE;4.946;88,3
+Asturias;3.657;SIPRES (coh 2000);2.591;70,9
+Baleares*;5.185;Padrón;3.726;71,9
+Canarias;10.084;Tarjeta Sanitaria;9.265;91,9
+Cantabria;2.516;ICANE;1.876;74,6
+Castilla y León;9.721;Registro vacunas de CyL (coh 2000) ;9.057;93,2
+Castilla La Mancha;9.850;Tarjeta Sanitaria;6.879;69,8
+Cataluña;35.624;Datos vacunación escolar;30.394;85,3
+C. Valenciana;22.710;Tarjeta Sanitaria;17.013;74,9
+Extremadura;5.282;CIVITAS;4.357;82,5
+Galicia;9.934;IGE. Padrón 2014;7.389;74,4
+Madrid;30.154;Padrón 2013;16.229;53,8
+Murcia*;7.939;Censo Escolar;6.596;83,1
+Navarra;3.048;Tarjeta Sanitaria;2.633;86,4
+P. Vasco;8.753;Departamento Educación;7.977;91,1
+La Rioja**;1.478;Censo Escolar;1.380;93,4
+Ceuta;488;Padrón / INE;468;95,9
+Melilla;547;PMH;421;77
+TOTAL;214.301;;156.664;73,1

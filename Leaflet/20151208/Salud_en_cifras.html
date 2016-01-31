@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tu_salud_en_cifras</title>
+    
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href=http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		
+    </head>
+    <body>
+        <div id="map"></div>
+        <script src="data/json_CentrosHospitales.js"></script>
+		<script src="data/json_Geriatria.js"></script>
+		<script src="data/json_areasalud.js"></script>
+        <script src="data/json_provincias.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera) {
+                highlightLayer.bringToFront();
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[27.1934585306,-24.0107721092],[44.1468905996,10.1692045792]]);
+        var hash = new L.Hash(map);
+        var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+		var title = new L.Control();
+		title.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+		};
+		title.update = function () {
+			this._div.innerHTML = '<h2>CATALOGO NACIONAL DE HOSPITALES</h2>Ministerio de Sanidad, Servicios Sociales e Igualdad - Año 2.015'
+		};
+		title.addTo(map);
+        var layerOrder = new Array();
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        map.on('overlayadd', restackLayers);
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_areasalud(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleareasalud(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><th scope="row">AREA DE SALUD</th><td>' + Autolinker.link(String(feature.properties['AREA_SALUD'])) + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+        function doStyleareasalud(feature) {
+            return {
+                weight: 1.00,
+                color: '#333333',
+                fillColor: '#F2F5A9',
+                dashArray: '',
+                opacity: 1.0,
+                fillOpacity: 1.0
+            };
+        }
+            var json_areasaludJSON = new L.geoJson(json_areasalud, {
+                onEachFeature: pop_areasalud,
+                style: doStyleareasalud
+            });
+            layerOrder[layerOrder.length] = json_areasaludJSON;
+        layerOrder[layerOrder.length] = json_areasaludJSON;
+        for (index = 0; index < layerOrder.length; index++) {
+            feature_group.removeLayer(layerOrder[index]);
+            feature_group.addLayer(layerOrder[index]);
+        }
+        bounds_group.addLayer(json_areasaludJSON);
+        feature_group.addLayer(json_areasaludJSON);
+		function pop_provincias(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleprovincias(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><th scope="row">PROVINCIA</th><td>' + Autolinker.link(String(feature.properties['PROVINCIA'])) + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+        function doStyleprovincias(feature) {
+            return {
+                weight: 2.00,
+                color: '#333333',
+                fillColor: '#0cc38c',
+                dashArray: '',
+                opacity: 1.0,
+                fillOpacity: 0.0
+            };
+        }
+            var json_provinciasJSON = new L.geoJson(json_provincias, {
+                onEachFeature: pop_provincias,
+                style: doStyleprovincias
+            });
+            layerOrder[layerOrder.length] = json_provinciasJSON;
+        layerOrder[layerOrder.length] = json_provinciasJSON;
+        for (index = 0; index < layerOrder.length; index++) {
+            feature_group.removeLayer(layerOrder[index]);
+            feature_group.addLayer(layerOrder[index]);
+        }
+        bounds_group.addLayer(json_provinciasJSON);
+        feature_group.addLayer(json_provinciasJSON);
+        function pop_Geriatria(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleGeriatria(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><th scope="row">NOMBRE</th><td>' + Autolinker.link(String(feature.properties['NOMBRE'])) + '</td></tr><tr><th scope="row">CAMAS</th><td>' + Autolinker.link(String(feature.properties['NCAMAS'])) + '</td></tr><tr><th scope="row">TITULARIDAD</th><td>' + Autolinker.link(String(feature.properties['PUB_PRIV'])) + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+        function doStyleGeriatria(feature) {
+			switch (feature.properties.PUB_PRIV) {
+                case 'PRIVADO':
+                    return {
+                    radius: '4.0',
+                    fillColor: '#7805ba',
+                    color: '#000000',
+                    weight: 1.0,
+                    opacity: 1.0,
+                    dashArray: '',
+                    fillOpacity: '1.0',
+                };
+                break;
+                case 'PUBLICO':
+                    return {
+                    radius: '4.0',
+                    fillColor: '#72d753',
+                    color: '#000000',
+                    weight: 1.0,
+                    opacity: 1.0,
+                    dashArray: '',
+                    fillOpacity: '1.0',
+                };
+                break;
+            }
+        }
+        var json_GeriatriaJSON = new L.geoJson(json_Geriatria, {
+            onEachFeature: pop_Geriatria,
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, doStyleGeriatria(feature))
+            }
+        });
+            layerOrder[layerOrder.length] = json_GeriatriaJSON;
+        bounds_group.addLayer(json_GeriatriaJSON);
+        feature_group.addLayer(json_GeriatriaJSON);
+        function pop_CentrosHospitales(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleCentrosHospitales(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><th scope="row">NOMBRE</th><td>' + Autolinker.link(String(feature.properties['NOMBRE'])) + '</td></tr><tr><th scope="row">CAMAS</th><td>' + Autolinker.link(String(feature.properties['NCAMAS'])) + '</td></tr><tr><th scope="row">TIPOLOGIA</th><td>' + Autolinker.link(String(feature.properties['FINALIDAD'])) + '</td></tr><tr><th scope="row">TITULARIDAD</th><td>' + Autolinker.link(String(feature.properties['PUB_PRIV'])) + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+        function doStyleCentrosHospitales(feature) {
+			switch (feature.properties.PUB_PRIV) {
+                case 'PRIVADO':
+                    return {
+                    radius: '4.0',
+                    fillColor: '#ff7f00',
+                    color: '#000000',
+                    weight: 1.0,
+                    opacity: 1.0,
+                    dashArray: '',
+                    fillOpacity: '1.0',
+                };
+                break;
+                case 'PUBLICO':
+                    return {
+                    radius: '4.0',
+                    fillColor: '#331fc9',
+                    color: '#000000',
+                    weight: 1.0,
+                    opacity: 1.0,
+                    dashArray: '',
+                    fillOpacity: '1.0',
+                };
+                break;
+            }
+        }
+        var json_CentrosHospitalesJSON = new L.geoJson(json_CentrosHospitales, {
+            onEachFeature: pop_CentrosHospitales,
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, doStyleCentrosHospitales(feature))
+            }
+        });
+            layerOrder[layerOrder.length] = json_CentrosHospitalesJSON;
+        bounds_group.addLayer(json_CentrosHospitalesJSON);
+        feature_group.addLayer(json_CentrosHospitalesJSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+        var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Search',
+        });
+        osmGeocoder.addTo(map);
+        var baseMaps = {};
+			L.control.layers({},{'HOSPITALES<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/CentrosHospitales_PRIVADO.png" /> Privado<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/CentrosHospitales_PUBLICO.png" /> Público<br />': json_CentrosHospitalesJSON,'GERIATRIA<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Geriatria_PRIVADO.png" /> Privado<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Geriatria_PUBLICO.png" /> Público<br />': json_GeriatriaJSON,'<img src="legend/areasalud.png" /> AREA DE SALUD': json_areasaludJSON,'<img src="legend/provincias.png" /> PROVINCIAS': json_provinciasJSON},{collapsed:false}).addTo(map);
+        L.control.scale({options: {position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}}).addTo(map);
+    </script>
+</body>
+</html>

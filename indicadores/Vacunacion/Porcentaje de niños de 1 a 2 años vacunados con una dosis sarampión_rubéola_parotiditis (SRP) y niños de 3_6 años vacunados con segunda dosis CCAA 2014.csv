@@ -1,0 +1,22 @@
+CC.AA;SRP-Primera dosis;;;;SRP-Segunda dosis;;
+;Población;Fuente;nº dosis;%;Población;nº dosis;%
+Andalucía;81.384 ;BDU/DIRAYA;79.868;98,1;87.553;83.864;95,8
+Aragón*;11.692 ;IAE;11.555;98,8;12.397;12.108;97,7
+Asturias;7.606 ;SIPRES (coh 2012);7.313;96,1;7.907;7.256;91,8
+Baleares;11.399 ;Padrón;11.103;97,4;12.121;11.606;95,8
+Canarias;16.871 ;Tarjeta Sanitaria;16.221;96,1;17.185;16.589;96,5
+Cantabria;4.632 ;ICANE;4.774;103,1;5.422;5.515;101,7
+Castilla y León**;18.219 ;Registro de vacunas CyL;17.275;94,8;20.482;17.857;87,2
+Castilla La Mancha;17.982 ;Tarjeta Sanitaria;17.423;96,9;20.731;18.664;90
+Cataluña;77.455 ;IDESCAT;70.414;90,9;84.342;74.651;88,5
+C. Valenciana;45.763 ;Tarjeta Sanitaria;44.731;97,7;57.331;56.397;98,4
+Extremadura;8.556 ;CIVITAS;8.071;94,3;9.944;9.068;91,2
+Galicia;21.137 ;IGE (nacimientos);20.468;96,8;23.055;20.940;90,8
+Madrid;65.341 ;Metabolopatias 2013;63.645;97,4;72.431;67.736;93,5
+Murcia;16.682 ;CRE;16.287;97,6;18.294;15.207;83,1
+Navarra;7.491 ;Tarjeta Sanitaria;7.384;98,6;6.678;6.395;95,8
+P. Vasco***;21.129 ;Tarjeta Sanitaria;19.474;92,2;22.087;20.477;92,7
+Rioja****;2.917 ;Registro de vacunas;2.867;98,3;3.084;2.931;95
+Ceuta;1.190 ;Padrón / INE;1.377;115,7;1.225;1.407;114,9
+Melilla;1.423 ;PMH;1.390;97,7;1.437;1.226;85,3
+TOTAL;438.869;;421.640;96,1;483.706;449.894;93
